@@ -60,6 +60,7 @@
 			this.resultItem.dateTime = dateFormat(now(),"mm/dd/yyyy") & " " &  timeFormat(now(),"medium");
 			this.resultItem.expected = "";
 			this.resultItem.actual = "";
+			this.resultItem.debug = [];
 
 			this.debug = arrayNew(1);
 		</cfscript>
@@ -108,20 +109,13 @@
 	--->
 	<cffunction name="setDebug" access="public" returntype="void" output="false">
 		<cfargument name="debugData" type="Any" required="true"/>
-	
-		<cfset var i = 1>
-		<cfset var tmp = arrayNew(1)>
-		<cfset this.resultItem.debug = arrayNew(1)>
-	
-		<cfif NOT isArray(debugData)>
-			<cfset arrayAppend(tmp, debugData)>
-			<cfset debugData = tmp>
-		</cfif>
-		<cfloop from="1" to="#arrayLen(debugData)#" index="i">
-			<!--- we are no longer calling duplicate()... it's a nice convenience
-			but causes too many problems. Users will now need to duplicate(data) themselves if they need it --->
-			<cfset arrayAppend(this.resultItem.debug, arguments.debugData[i])/>
-		</cfloop>
+		<cfscript>
+			if (isArray(arguments.debugData)) {
+				this.resultItem.debug.addAll(arguments.debugData);
+			} else {
+				this.resultItem.debug.add(arguments.debugData);
+			}
+		</cfscript>
 	</cffunction>
 
 	<cffunction name="getDebug" access="public" returntype="any" output="false">

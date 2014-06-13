@@ -104,7 +104,11 @@
 			for(i = 1; i lte arrayLen(arguments.results); i = i + 1){
 				testResults = arguments.results[i];
 				this.resultsXML = this.resultsXML & '<testcase classname="#testResults.component#" name="#testResults.testname#" time="#testResults.time/1000#">';
-
+/*
+				for (var thisDebug in testResults.debug) {
+					this.resultsXML &= '<system-out><![CDATA['&thisDebug.var&']]></system-out>';
+				}
+*/
 				if( listFindNoCase("Failed",testResults.testStatus)){
 					this.resultsXML = this.resultsXML & '<failure message="#xmlformat(testResults.error.message)#"><![CDATA[#generateStacktrace(testResults.error)#]]></failure>';
 				} else if( listFindNoCase("Error",testResults.testStatus)) {
